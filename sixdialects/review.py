@@ -39,11 +39,27 @@ Someone is building this:
 - decision: one concrete, implementable design decision this grammar implies
   (a default, a flow, a piece of copy, a retention rule, who is asked first)
 
+Constraints. Breaking any of these makes the output worse than nothing:
+
+- Do not invent laws, standards or regulatory caps. If you refer to a rule,
+  name it. If you cannot name it, say what the grammar would ask for instead.
+- Do not invent specific numbers, thresholds or limits that the project did
+  not mention. The grammars differ in what they start from, not in what
+  number they pick.
+- The design decision must be something this team could implement this week,
+  and it must follow from the grammar's premise, not from general product
+  sense.
+- Do not escalate severity to make a grammar sound distinct. London is not
+  the grammar of catastrophe for its own sake; it asks what happens when the
+  same default runs a million times.
+
 Then find the places where two grammars contradict each other about this
 specific project. Those are forks the builder has to take deliberately.
 
-Finally, name the moment in THIS project where the user stops deciding and
-hands the choice to the system. Be concrete about where in the flow it sits.
+Finally, name the moment in THIS project where the user stops exercising
+their own judgment and lets the system's answer stand. This is not a button
+or a screen. It is the point where a person had a decision and no longer has
+it, and it is usually earlier and quieter than the confirmation step.
 
 Return JSON exactly in this shape:
 
@@ -54,7 +70,7 @@ Return JSON exactly in this shape:
    {{"between": ["<id>", "<id>"], "about": "<what they disagree on here>"}}
  ],
  "delegation_moment": "<where in this flow the user stops deciding>",
- "question": "<the one question this team should carry, specific to what they are building>"}}
+ "question": "<one question about THIS system's design, answerable by a decision the team makes. Not a philosophical question about ethics in general.>"}}
 
 Valid ids: {ids}."""
 
