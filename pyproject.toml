@@ -1,0 +1,22 @@
+[project]
+name = "six-dialects"
+version = "0.1.0"
+description = "Measure which ethical grammar a language model reaches for first."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Nicoletta Iacobacci" }]
+dependencies = ["PyYAML>=6.0"]
+
+[project.scripts]
+six-dialects = "sixdialects.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["sixdialects*"]
+
+[tool.setuptools.package-data]
+sixdialects = ["data/*.yaml"]

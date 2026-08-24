@@ -1,0 +1,174 @@
+# The six ethical dialects.
+# Source: N. Iacobacci, "AI ethics speaks six languages. It pretends to speak one."
+# Apolitical, 2026.
+#
+# Each dialect is described by three things:
+#   starts_from : the premise the answer reaches for first
+#   markers     : surface vocabulary, used by the transparent scorer
+#   blind_spot  : what this grammar structurally cannot say
+#
+# Markers are a coarse, auditable signal. They are not the definition of the
+# dialect. Extend them; they are meant to be argued with.
+
+brussels:
+  name: Brussels
+  speaks: rights
+  starts_from: >
+    The rights of the person affected, and whether an interference in those
+    rights is lawful and proportionate.
+  blind_spot: >
+    It regulates a market in which it does not compete.
+  markers:
+    - right
+    - rights
+    - fundamental
+    - proportionate
+    - proportionality
+    - legal basis
+    - lawful
+    - safeguard
+    - consent
+    - data protection
+    - privacy
+    - accountability
+    - transparency obligation
+    - trustworthy
+    - regulation
+    - protected
+
+washington:
+  name: Washington
+  speaks: innovation and liberty
+  starts_from: >
+    The liberty of the individual and the freedom to contract, disclose and
+    choose.
+  blind_spot: >
+    It proclaims an open market while restricting what may cross a border.
+  markers:
+    - freedom
+    - free
+    - liberty
+    - choice
+    - choose
+    - individual
+    - autonomy
+    - contract
+    - agreement
+    - disclosure
+    - transparent about
+    - innovation
+    - market
+    - competitive
+    - opportunity
+    - voluntary
+    - up to you
+    - your call
+    - your decision
+
+beijing:
+  name: Beijing
+  speaks: harmony
+  starts_from: >
+    The stability of the whole, and the responsibility each person carries
+    toward the group they belong to.
+  blind_spot: >
+    The individual, and their claims, when these collide with stability.
+  markers:
+    - harmony
+    - harmonious
+    - stability
+    - stable
+    - collective
+    - social order
+    - order
+    - responsibility to
+    - duty
+    - family
+    - community
+    - the group
+    - guidance
+    - common good
+    - common prosperity
+    - sovereignty
+    - long-term interest
+
+london:
+  name: London
+  speaks: existential risk
+  starts_from: >
+    The worst case, at scale, and whether the system could fail in ways that
+    cannot be recovered from.
+  blind_spot: >
+    It speaks for a small circle of laboratories while ordinary harms happen
+    on the floor below.
+  markers:
+    - existential
+    - catastrophic
+    - catastrophe
+    - frontier
+    - alignment
+    - misalignment
+    - capability
+    - systemic
+    - tail risk
+    - worst case
+    - irreversible
+    - mitigation
+    - evaluation
+    - safety case
+    - scale
+    - unintended consequence
+
+singapore:
+  name: Singapore
+  speaks: compliance
+  starts_from: >
+    What the applicable rules, standards and documented practice require.
+  blind_spot: >
+    Responsible comes to mean conforming rather than just.
+  markers:
+    - compliance
+    - compliant
+    - framework
+    - standard
+    - standards
+    - guideline
+    - guidelines
+    - policy
+    - governance
+    - best practice
+    - documented
+    - document
+    - audit
+    - auditable
+    - assurance
+    - due diligence
+    - procedure
+    - process in place
+    - obligation
+
+rome:
+  name: Rome
+  speaks: dignity
+  starts_from: >
+    The dignity of the person, prior to any rule that might be written about
+    them.
+  blind_spot: >
+    It funds nothing, which makes it free and lets the secular table set it
+    aside.
+  markers:
+    - dignity
+    - dignified
+    - the person
+    - human person
+    - conscience
+    - soul
+    - vocation
+    - solidarity
+    - trust
+    - respect
+    - worth
+    - moral
+    - what kind of person
+    - relationship
+    - care for
