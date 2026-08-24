@@ -11,6 +11,10 @@ import urllib.error
 import urllib.request
 from dataclasses import dataclass
 
+from . import __version__
+
+USER_AGENT = f"six-dialects/{__version__}"
+
 
 class EndpointError(RuntimeError):
     pass
@@ -42,6 +46,9 @@ class Endpoint:
             data=json.dumps(payload).encode("utf-8"),
             headers={
                 "Content-Type": "application/json",
+                # some gateways (Public AI among them) reject the default
+                # urllib agent as bot traffic
+                "User-Agent": USER_AGENT,
                 **({"Authorization": f"Bearer {self.api_key}"} if self.api_key else {}),
             },
             method="POST",
