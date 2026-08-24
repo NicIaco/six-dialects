@@ -142,7 +142,7 @@ This is the part that matters, and the part meant to grow.
 ```
 
 ```bash
-six-dialects --scenarios my_scenarios.yaml --base-url ... --model ...
+six-dialects probe --scenarios my_scenarios.yaml --base-url ... --model ...
 ```
 
 One rule: **a scenario must have no correct answer.** If it has one, you are measuring competence, not values, and it does not belong here.
