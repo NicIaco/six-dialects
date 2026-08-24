@@ -8,7 +8,18 @@
 #   blind_spot  : what this grammar structurally cannot say
 #
 # Markers are a coarse, auditable signal. They are not the definition of the
-# dialect. Extend them; they are meant to be argued with.
+# dialect, and they are not evidence. Extend them; they are meant to be argued
+# with.
+#
+# Two known weaknesses, stated rather than hidden:
+#
+#   Negation is not handled. "The family should not decide this" contains
+#   'family' and will count toward Beijing. A word appearing is not a premise
+#   being used.
+#
+#   Generic words have been removed where they appeared in every grammar at
+#   once. Some remain. If a marker fires on text that clearly belongs to a
+#   different grammar, that marker is wrong and should be deleted.
 
 brussels:
   name: Brussels
@@ -34,7 +45,6 @@ brussels:
     - transparency obligation
     - trustworthy
     - regulation
-    - protected
 
 washington:
   name: Washington
@@ -48,12 +58,9 @@ washington:
     - freedom
     - free
     - liberty
-    - choice
     - choose
-    - individual
     - autonomy
     - contract
-    - agreement
     - disclosure
     - transparent about
     - innovation
@@ -80,11 +87,7 @@ beijing:
     - stable
     - collective
     - social order
-    - order
     - responsibility to
-    - duty
-    - family
-    - community
     - the group
     - guidance
     - common good
@@ -114,9 +117,7 @@ london:
     - worst case
     - irreversible
     - mitigation
-    - evaluation
     - safety case
-    - scale
     - unintended consequence
 
 singapore:
@@ -130,20 +131,15 @@ singapore:
     - compliance
     - compliant
     - framework
-    - standard
-    - standards
     - guideline
     - guidelines
-    - policy
     - governance
     - best practice
     - documented
-    - document
     - audit
     - auditable
     - assurance
     - due diligence
-    - procedure
     - process in place
     - obligation
 
@@ -165,10 +161,5 @@ rome:
     - soul
     - vocation
     - solidarity
-    - trust
-    - respect
-    - worth
-    - moral
     - what kind of person
-    - relationship
     - care for

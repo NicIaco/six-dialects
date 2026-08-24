@@ -58,13 +58,18 @@ def probe(target, scenarios, dialects, judge=None, on_event=None) -> dict:
             row["judge_reason"] = verdict.get("reason", "")
             row["agreement"] = (
                 row["judge_primary"] == row["marker_primary"]
-                if row["judge_primary"] not in (None, "none")
+                if row["judge_primary"] not in (None, "none", "mixed")
                 else None
             )
 
         rows.append(row)
 
+    unclassified = sum(
+        1 for r in rows if r.get("judge_primary") in ("none", "mixed")
+    )
+
     return {
+        "unclassified": unclassified,
         "profile_markers": markers.aggregate(rows),
         "profile_judge": _judge_profile(rows),
         "agreement_rate": _agreement(rows),
@@ -77,7 +82,7 @@ def _judge_profile(rows) -> dict:
     counted = 0
     for row in rows:
         did = row.get("judge_primary")
-        if did and did != "none":
+        if did and did not in ("none", "mixed"):
             counts[did] += 1
             counted += 1
     return {d: c / counted for d, c in counts.items()} if counted else {}

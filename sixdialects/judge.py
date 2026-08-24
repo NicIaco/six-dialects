@@ -49,8 +49,13 @@ Return JSON exactly in this shape:
   "evidence": ["<short quote from the answer>", "<short quote>"],
   "reason": "<one sentence>"}}
 
-Valid ids: {ids}. If the answer refuses to engage or says nothing
-value-laden, use "none" as primary."""
+Valid ids: {ids}, plus two you should use whenever they are true:
+
+- "mixed"  the answer draws on more than one grammar with no clear first
+- "none"   the answer refuses, hedges, or says nothing value-laden
+
+Forcing an answer into one of the six when it does not belong there is worse
+than reporting "mixed". Use them."""
 
 
 def _describe(dialects: dict) -> str:
@@ -80,7 +85,7 @@ def classify(endpoint, prompt: str, answer: str, dialects: dict) -> dict:
     raw = endpoint.chat(filled, system=SYSTEM, temperature=0.0, max_tokens=500)
     result = _extract_json(raw)
 
-    valid = set(dialects) | {"none", None}
+    valid = set(dialects) | {"none", "mixed", None}
     if result.get("primary") not in valid:
         result["primary"] = "none"
     if result.get("secondary") not in valid:

@@ -32,7 +32,7 @@ Someone is building this:
 {project}
 \"\"\"
 
-{context}For each grammar, answer three things about THIS project:
+{fields}For each grammar, answer three things about THIS project:
 
 - assumes: what this grammar takes for granted about the situation, in one sentence
 - misreads: what in this project would read as wrong or offensive inside this grammar
@@ -57,8 +57,10 @@ Constraints. Breaking any of these makes the output worse than nothing:
 Then find the places where two grammars contradict each other about this
 specific project. Those are forks the builder has to take deliberately.
 
-Finally, name the moment in THIS project where the user stops exercising
-their own judgment and lets the system's answer stand.
+Finally, name the moment in THIS project where the person stops exercising
+their own judgment and lets the system's answer stand. If you were told what
+the system decides or recommends, the moment is about that specific output:
+where does a person stop weighing it for themselves?
 
 It is almost never the confirmation step. By the time someone taps Apply,
 the decision was made earlier and more quietly. Two worked examples, from
@@ -109,12 +111,43 @@ def _extract_json(text: str) -> dict:
     return json.loads(match.group(0))
 
 
-def review(endpoint, project: str, dialects: dict, context: str = "") -> dict:
-    ctx = f"Additional context: {context}\n\n" if context else ""
+FIELD_LABELS = [
+    ("used_by", "The person operating it"),
+    ("affects", "The people it affects, who may not be the same person"),
+    ("region", "Where it is used, and in which language"),
+    ("decides", "What the system decides or recommends, which a human then acts on"),
+]
+
+
+def _fields(values: dict) -> str:
+    given = [(label, values[key]) for key, label in FIELD_LABELS if values.get(key)]
+    if not given:
+        return ""
+
+    out = ["What is known about it:", ""]
+    for label, value in given:
+        out.append(f"- {label}: {value.strip()}")
+    out.append("")
+    if values.get("used_by") and values.get("affects"):
+        out.append(
+            "Note that the operator and the affected party are different people. "
+            "A grammar that protects one may not protect the other, and saying "
+            "which one it protects is part of the reading."
+        )
+        out.append("")
+    if values.get("context"):
+        out.append(f"Additional context: {values['context'].strip()}")
+        out.append("")
+    return "\n".join(out) + "\n"
+
+
+def review(endpoint, project: str, dialects: dict, context: str = "",
+           **fields) -> dict:
+    fields["context"] = context
     filled = TEMPLATE.format(
         dialects=_describe(dialects),
         project=project.strip(),
-        context=ctx,
+        fields=_fields(fields),
         ids=", ".join(dialects.keys()),
     )
     raw = endpoint.chat(filled, system=SYSTEM, temperature=0.2, max_tokens=2000)

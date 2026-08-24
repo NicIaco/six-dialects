@@ -51,8 +51,15 @@ def build_parser():
     r.add_argument("project", nargs="?",
                    help="what you are building, in your own words. Omit to read stdin.")
     r.add_argument("--file", help="read the project description from a file")
-    r.add_argument("--context", default="",
-                   help="who it is for, where it ships, which language")
+    r.add_argument("--used-by", default="",
+                   help="the person operating it (e.g. a council clerk)")
+    r.add_argument("--affects", default="",
+                   help="the people it affects, if not the same person")
+    r.add_argument("--region", default="",
+                   help="where it is used, and in which language")
+    r.add_argument("--decides", default="",
+                   help="what the system decides or recommends")
+    r.add_argument("--context", default="", help="anything else worth knowing")
 
     return ap
 
@@ -102,7 +109,14 @@ def _cmd_review(ap, args) -> int:
         print("Reading it in six grammars", file=sys.stderr)
 
     dialects = load_dialects()
-    result = run_review(endpoint, project, dialects, context=args.context)
+    result = run_review(
+        endpoint, project, dialects,
+        context=args.context,
+        used_by=args.used_by,
+        affects=args.affects,
+        region=args.region,
+        decides=args.decides,
+    )
     print(render_review(result, dialects))
     return _write(args, result)
 

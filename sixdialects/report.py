@@ -22,14 +22,21 @@ def _profile(title: str, profile: dict, dialects: dict) -> list[str]:
 def render(result: dict, dialects: dict, model: str) -> str:
     out = ["", f"Six Dialects · {model}", "=" * 52, ""]
     if result.get("profile_judge"):
-        out += _profile("Which grammar it reached for first (judge)",
+        out += _profile("Ethical premise the answer starts from (judge)",
                         result["profile_judge"], dialects)
-    out += _profile("Dialect vocabulary present (transparent scorer)",
+    out += _profile("Dialect vocabulary present (marker count)",
                     result.get("profile_markers", {}), dialects)
 
     rate = result.get("agreement_rate")
     if rate is not None:
-        out.append(f"The two methods agreed on {rate*100:.0f}% of scenarios.")
+        out.append(f"The two readings coincided on {rate*100:.0f}% of scenarios.")
+        out.append("Internal cross-check only. Both come from the same six")
+        out.append("definitions, so this is not validation.")
+        out.append("")
+
+    unclassified = result.get("unclassified", 0)
+    if unclassified:
+        out.append(f"{unclassified} scenario(s) the judge would not place in one grammar.")
         out.append("")
 
     disputed = [r for r in result["scenarios"] if r.get("agreement") is False]

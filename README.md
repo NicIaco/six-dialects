@@ -1,27 +1,30 @@
 # Six Dialects
 
-**A values probe for language models.** It does not tell a model what to be. It shows what it already is.
+**A framing probe for language models.** It does not tell a model what to be, and it does not claim to see inside one.
 
-Ask a model twelve questions that have no correct answer, and it will answer them anyway. The grammar it reaches for first is not neutral, and it is not written down anywhere. This measures it.
+Ask a model twelve questions that have no correct answer, and it will answer them anyway. Every answer starts somewhere: from a right, from a freedom, from the stability of a group, from a rule. This reads where the answer starts, and reports it.
+
+It classifies the ethical premise a model's answer is written from. It does not observe latent values, weights or reasoning. Nothing here has access to anything but text that came out.
 
 ```
 Six Dialects · apertus-70b-1.5
 ====================================================
 
-Which grammar it reached for first (judge)
+Ethical premise the answer starts from (judge)
   Washington   ████████████████········  66.7%
   Brussels     ██████··················  25.0%
   Rome         ██······················   8.3%
 
-Dialect vocabulary present (transparent scorer)
+Dialect vocabulary present (marker count)
   Washington   ██████████████··········  58.3%
   Brussels     ████████················  33.3%
   Singapore    ██······················   8.3%
 
-The two methods agreed on 75% of scenarios.
+The two readings coincided on 75% of scenarios.
+(internal cross-check, not validation: see below)
 ```
 
-A model can be open all the way down — weights, data, training process — and still be unreadable at the level that decides how it talks to a person. This reads that level.
+A model can be open all the way down, weights and data and training process, and still be unreadable at the level that decides how it talks to a person. This reads that level, imperfectly, from the outside.
 
 ---
 
@@ -104,6 +107,22 @@ THE MOMENT
 
 It will not tell you which grammar to pick. That is yours.
 
+### Tell it more and it reads better
+
+A one-line description leaves the model to guess who is at the keyboard and who has to live with the result, and it guesses badly. Four optional fields close that gap:
+
+```bash
+six-dialects review "A tool that ranks residential buildings for public retrofit funding." \
+  --used-by "a council clerk preparing the agenda" \
+  --affects "residents of the buildings being ranked" \
+  --region  "Swiss municipalities, German and French" \
+  --decides "the order in which buildings receive public money"
+```
+
+`--affects` is the one that earns its place. The operator and the affected party are usually different people, and a grammar that protects one often does not protect the other. Said out loud, that difference is most of the reading.
+
+`--decides` is what makes the delegation moment findable. Name the output a human acts on, and the tool can find the point where they stopped weighing it.
+
 ---
 
 ## `probe` · measure a model
@@ -122,9 +141,31 @@ Twelve questions with no correct answer go to the model, and the grammar of its 
 
 **The transparent scorer** counts dialect vocabulary. It is coarse, and every step of it is visible without trusting any model at all.
 
-Neither is authoritative. Where the two disagree, the report lists those scenarios and asks you to read them yourself. The disagreement is the interesting part, not a defect to be tuned away.
+**They are not independent, and their agreement is not validation.** Both are built from the same six definitions in `dialects.yaml`: the judge reads `starts_from`, the marker count reads `markers`. When they coincide, that is two operationalisations of one schema agreeing with each other, which is internal consistency and nothing more. It is reported because disagreement is diagnostic, not because agreement is evidence.
+
+Where the two diverge, the report lists those scenarios and asks you to read them yourself. That divergence is the useful part.
 
 **The judge has its own defaults.** A model classifying moral grammar is itself written in one. This is a real limitation, stated here rather than hidden: run more than one judge, or none, and compare.
+
+---
+
+## What has not been validated
+
+This is the honest limit of the instrument, stated here rather than discovered by someone else.
+
+**There is no independent ground truth.** The six categories were defined by one person, the scenarios were written to separate those same categories, and the judge is handed those same definitions and asked which one it sees. Read strictly, the repository currently demonstrates that model answers *can be read coherently* through this lens. It does not yet demonstrate that the six categories measure anything about a model that another method would also find.
+
+What would fix it, in order:
+
+1. **Blind human annotation.** Three to five people who know the framework label the same corpus of outputs without seeing each other's labels or the judge's.
+2. **Inter-annotator agreement.** If humans do not converge, the categories are not yet a measure, and that is worth knowing.
+3. **Judge against human consensus**, rather than judge against keyword count.
+
+Until that exists, treat every number this tool prints as a reading, not a measurement.
+
+**This is the most useful thing anyone could contribute.** Building the annotated corpus is a real piece of work and it does not require writing any code: it requires several people reading model outputs carefully and disagreeing with each other in writing. If you do it, open a pull request with the labels and the disagreements, both.
+
+**The marker count is naive by construction.** It counts words. It does not handle negation: "the family should not decide this" contains *family* and will push the text toward Beijing. Several markers are also generic enough to appear in any framing. Both are known and neither is hidden; the count is there to be checkable, not to be right.
 
 ---
 
