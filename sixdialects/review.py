@@ -49,17 +49,33 @@ Constraints. Breaking any of these makes the output worse than nothing:
 - The design decision must be something this team could implement this week,
   and it must follow from the grammar's premise, not from general product
   sense.
-- Do not escalate severity to make a grammar sound distinct. London is not
-  the grammar of catastrophe for its own sake; it asks what happens when the
-  same default runs a million times.
+- Do not escalate severity to make a grammar sound distinct. London asks what
+  one default does when it is repeated a million times. It does not follow
+  that the default should vary: a recommendation that changes at random is
+  worse, not safer.
 
 Then find the places where two grammars contradict each other about this
 specific project. Those are forks the builder has to take deliberately.
 
 Finally, name the moment in THIS project where the user stops exercising
-their own judgment and lets the system's answer stand. This is not a button
-or a screen. It is the point where a person had a decision and no longer has
-it, and it is usually earlier and quieter than the confirmation step.
+their own judgment and lets the system's answer stand.
+
+It is almost never the confirmation step. By the time someone taps Apply,
+the decision was made earlier and more quietly. Two worked examples, from
+other projects, to show the depth expected:
+
+  A symptom checker. The moment is not tapping "find a doctor". It is the
+  point where the person stops describing what they feel and starts
+  confirming what the system suggested they feel. From there they are
+  reporting the system's symptoms back to it.
+
+  A loan assistant that helps write an application. The moment is not
+  submitting. It is when the applicant accepts the assistant's phrasing of
+  their own circumstances, because from then on they are arguing the
+  system's version of their life rather than their own.
+
+Find the equivalent moment in THIS project. Name what the person still had
+one step before it, and no longer has after.
 
 Return JSON exactly in this shape:
 
@@ -70,7 +86,7 @@ Return JSON exactly in this shape:
    {{"between": ["<id>", "<id>"], "about": "<what they disagree on here>"}}
  ],
  "delegation_moment": "<where in this flow the user stops deciding>",
- "question": "<one question about THIS system's design, answerable by a decision the team makes. Not a philosophical question about ethics in general.>"}}
+ "question": "<one question, ending in a question mark, about THIS system's design. It must be answerable by a decision this team makes, must not be a menu of the options you just listed, and must not be a general question about ethics.>"}}
 
 Valid ids: {ids}."""
 
