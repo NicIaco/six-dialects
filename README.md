@@ -44,7 +44,7 @@ If a model trained in Switzerland answers a Swiss family question in Washington 
 ## Install
 
 ```bash
-git clone https://github.com/<you>/six-dialects
+git clone https://github.com/NicIaco/six-dialects
 cd six-dialects && pip install -e .
 ```
 
