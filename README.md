@@ -4,6 +4,8 @@
 
 Brussels reasons from rights. Washington from liberty. Beijing from the stability of the group. London from catastrophic risk. Singapore from compliance. Rome from human dignity. Each believes it is having the same conversation as the others, and each starts somewhere the others do not.
 
+*The argument this comes from: [AI ethics speaks six languages. It pretends to speak one.](https://apolitical.co/en/articles/ai-ethics-speaks-six-languages-it-pretends-to-speak-one-54), Apolitical 2026, and in Italian in [Il Mondo Nuovo](https://www.ilmondonuovo.club/letica-dellai-parla-sei-lingue-e-fa-finta-di-parlarne-una/).*
+
 This is an instrument for reading which of those six a piece of reasoning comes from. It does not tell a model what to be, and it does not claim to see inside one.
 
 Ask a model twelve questions that have no correct answer, and it will answer them anyway. Every answer begins somewhere. This reads where, and reports it.
