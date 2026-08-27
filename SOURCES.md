@@ -67,11 +67,36 @@ person toward the group rather than the other way.*
 
 ---
 
+## Prior work this sits next to
+
+- Jobin, A., Ienca, M., Vayena, E. (2019). **The global landscape of AI ethics
+  guidelines.** *Nature Machine Intelligence* 1, 389–399.
+  https://doi.org/10.1038/s42256-019-0088-2
+- Corrêa, N. K., et al. (2023). **Worldwide AI ethics: a review of 200
+  guidelines and recommendations for AI governance.** *Patterns* 4(10).
+  https://doi.org/10.1016/j.patter.2023.100857
+
+- Donahoe, E., Metzger, M. M. (2019). **Artificial Intelligence and Human
+  Rights.** *Journal of Democracy* 30(2), 115–126.
+  https://doi.org/10.1353/jod.2019.0029
+- Wong, P.-H. (2020). **Cultural Differences as Excuses? Human Rights and
+  Cultural Values in Global Ethics and Governance of AI.** *Philosophy &
+  Technology* 33, 705–715. https://doi.org/10.1007/s13347-020-00413-8
+
+The first two classify by stated principle. The last two argue from and about
+premises without building an instrument, and Wong in particular is the warning
+this project has to answer. This project classifies by starting
+premise. See "Related work" in the README for why that is a different cut and
+what it does and does not establish.
+
 ## The framework itself
 
 - Nicoletta Iacobacci, **"AI ethics speaks six languages. It pretends to speak
   one."** Apolitical, 2026.
   https://apolitical.co/en/articles/ai-ethics-speaks-six-languages-it-pretends-to-speak-one-54
+  Italian version, **"L'etica dell'AI parla sei lingue. E fa finta di parlarne
+  una."** Il Mondo Nuovo, 2026.
+  https://www.ilmondonuovo.club/letica-dellai-parla-sei-lingue-e-fa-finta-di-parlarne-una/
 - Nicoletta Iacobacci, **"Human Being vs. Being Human."** Zenodo.
   https://doi.org/10.5281/zenodo.17056293
 
