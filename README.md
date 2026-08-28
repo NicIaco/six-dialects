@@ -308,16 +308,18 @@ It is a mirror with a ruler on it.
 
 Apache 2.0. Take it, fork it, ship it inside whatever you are building.
 
-Six Dialects was created and is maintained by Nicoletta Iacobacci, ORCID 0000-0003-0274-4049. Copyright 2026.
+Six Dialects was created and is maintained by Nicoletta Iacobacci, [ORCID 0000-0003-0274-4049](https://orcid.org/0000-0003-0274-4049). Copyright 2026.
 
-The framework it implements is from AI ethics speaks six languages. It pretends to speak one., Nicoletta Iacobacci, Apolitical 2026, also published in Italian in Il Mondo Nuovo. If you use the dialect definitions, cite it.
+The framework it implements is from [*AI ethics speaks six languages. It pretends to speak one.*](https://apolitical.co/en/articles/ai-ethics-speaks-six-languages-it-pretends-to-speak-one-54), Nicoletta Iacobacci, Apolitical 2026, also published in Italian in [Il Mondo Nuovo](https://www.ilmondonuovo.club/letica-dellai-parla-sei-lingue-e-fa-finta-di-parlarne-una/). If you use the dialect definitions, cite it.
 
 If you use the tool itself, cite the archived release:
 
 <!-- badge DOI, dopo la release -->
 
-The name. Apache 2.0 grants copyright and patent rights, and does not grant trademark rights. Fork the code freely. If you distribute a modified version, give it a different name, so that readers can tell your work from this one. Describing your project as "based on Six Dialects" needs no permission.
+**The name.** Apache 2.0 grants copyright and patent rights, and does not grant trademark rights. Fork the code freely. If you distribute a modified version, give it a different name, so that readers can tell your work from this one. Describing your project as "based on Six Dialects" needs no permission.
 
-Related work, and the reason this exists: eofe.ai
+Related work, and the reason this exists: [eofe.ai](https://eofe.ai)
+
 ---
+
 *Ethics of Example gives one thing away and keeps one. The dialects are yours to take.*
