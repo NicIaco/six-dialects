@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+title: "Six Dialects"
+version: 0.1.0
+license: "Apache-2.0"
+type: software
+message: "If you use this software, please cite it as below."
+abstract: >-
+  Six Dialects reads a software project through six moral grammars and reports,
+  for each, the premise it starts from, what in the project would be read as
+  wrong there, and one concrete design decision that follows. It then shows
+  where two grammars contradict each other on that specific case, and names the
+  point at which a person stops exercising their own judgment. The six are
+  Brussels (rights), Washington (freedom), Beijing (group stability), London
+  (catastrophic risk), Singapore (compliance) and Rome (dignity). Two commands:
+  review reads a project, probe asks a model twelve questions with no right
+  answer and reports which grammar it answers in. Six is a sample, not a census:
+  the categories are defined by one person and there is no independent ground
+  truth yet, so every output is a reading, not a measure. The conditions under
+  which a category enters or is retired are stated in the repository.
+authors:
+  - given-names: Nicoletta
+    family-names: Iacobacci
+    affiliation: "Ethics of Example"
+    orcid: "https://orcid.org/0000-0003-0274-4049"
+keywords:
+  - AI ethics
+  - AI governance
+  - responsible AI
+  - value pluralism
+  - human oversight
+  - design review
+  - large language models
+  - moral reasoning
