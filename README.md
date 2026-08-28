@@ -296,6 +296,8 @@ The marker lists in `dialects.yaml` are meant to be argued with, not accepted.
 
 ## What this is not
 
+Not a compliance tool. It does not tell you whether you comply; it shows you what you are assuming, so that you know what to go and check.
+
 Not an alignment tool. Not a safety benchmark. Not a scoring system that says one model is better than another: a Brussels profile is not superior to a Rome profile, and anyone who reads it that way has misunderstood the instrument.
 
 It is a mirror with a ruler on it.
@@ -306,10 +308,16 @@ It is a mirror with a ruler on it.
 
 Apache 2.0. Take it, fork it, ship it inside whatever you are building.
 
-The framework it implements is from *AI ethics speaks six languages. It pretends to speak one.*, Nicoletta Iacobacci, Apolitical 2026, also published in Italian in Il Mondo Nuovo. If you use the dialect definitions, cite it.
+Six Dialects was created and is maintained by Nicoletta Iacobacci, ORCID 0000-0003-0274-4049. Copyright 2026.
 
-Related work, and the reason this exists: [eofe.ai](https://eofe.ai)
+The framework it implements is from AI ethics speaks six languages. It pretends to speak one., Nicoletta Iacobacci, Apolitical 2026, also published in Italian in Il Mondo Nuovo. If you use the dialect definitions, cite it.
 
+If you use the tool itself, cite the archived release:
+
+<!-- badge DOI, dopo la release -->
+
+The name. Apache 2.0 grants copyright and patent rights, and does not grant trademark rights. Fork the code freely. If you distribute a modified version, give it a different name, so that readers can tell your work from this one. Describing your project as "based on Six Dialects" needs no permission.
+
+Related work, and the reason this exists: eofe.ai
 ---
-
 *Ethics of Example gives one thing away and keeps one. The dialects are yours to take.*
