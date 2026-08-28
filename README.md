@@ -314,7 +314,7 @@ The framework it implements is from [*AI ethics speaks six languages. It pretend
 
 If you use the tool itself, cite the archived release:
 
-<!-- badge DOI, dopo la release -->
+[![DOI](https://zenodo.org/badge/1344814136.svg)](https://doi.org/10.5281/zenodo.22145171)
 
 **The name.** Apache 2.0 grants copyright and patent rights, and does not grant trademark rights. Fork the code freely. If you distribute a modified version, give it a different name, so that readers can tell your work from this one. Describing your project as "based on Six Dialects" needs no permission.
 
