@@ -48,6 +48,14 @@ A seventh place at that table, Abu Dhabi, speaks capital. It is deliberately not
 
 ---
 
+## Why it might matter to you
+
+If you are building on an open, sovereign model, you can inspect the weights and the training data. You cannot yet inspect the values. That gap is not a flaw in the model; that layer simply is not in the model. It shows up only in what comes out.
+
+If a model trained in Switzerland answers a Swiss family question in Washington grammar, that is a finding, and until now there was no instrument that could produce it.
+
+---
+
 ## Install
 
 ```bash
