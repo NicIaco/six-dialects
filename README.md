@@ -38,17 +38,13 @@ A model can be open all the way down, weights and data and training process, and
 
 Six capitals govern AI in six different moral grammars, and each believes it is having the same conversation as the others. Brussels speaks rights. Washington speaks innovation and liberty. Beijing speaks harmony. London speaks existential risk. Singapore speaks compliance. Rome speaks dignity.
 
+Rome is the tradition of human dignity, from Rerum Novarum to the Rome Call and the 2026 encyclical. Not the Treaty of Rome: that grammar is Brussels.
+
 The full argument is here: [AI ethics speaks six languages. It pretends to speak one.](https://apolitical.co/en/articles/ai-ethics-speaks-six-languages-it-pretends-to-speak-one-54) (Apolitical, 2026), and in Italian: [L'etica dell'AI parla sei lingue. E fa finta di parlarne una.](https://www.ilmondonuovo.club/letica-dellai-parla-sei-lingue-e-fa-finta-di-parlarne-una/) (Il Mondo Nuovo, 2026)
 
 A seventh place at that table, Abu Dhabi, speaks capital. It is deliberately not in this tool. Capital is not a moral grammar, and no assistant answers a question about a dying parent in it.
 
 **Six is a sample, not a census.** The set can gain a dialect and it can lose one, and both take evidence rather than argument. See [how a dialect gets in, and how one gets out](#how-a-dialect-gets-in-and-how-one-gets-out).
-
-## Why it might matter to you
-
-If you are building on an open, sovereign model, you can inspect the weights and the training data. You cannot yet inspect the values. That gap is not a flaw in the model; that layer simply is not in the model. It shows up only in what comes out.
-
-If a model trained in Switzerland answers a Swiss family question in Washington grammar, that is a finding, and until now there was no instrument that could produce it.
 
 ---
 
