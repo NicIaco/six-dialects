@@ -59,8 +59,10 @@ person toward the group rather than the other way.*
 
 ## Rome · dignity
 
+- **Magnifica humanitas**, Encyclical Letter of Leo XIV, May 2026 — the current statement
+  https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html
 - **Rome Call for AI Ethics**, 2020
-  https://www.romecall.org/
+  https://www.romecall.org/ 
 - **Rerum Novarum**, Leo XIII, 1891 — the precedent the recent texts claim
 
 *Read for: the dignity of the person as prior to any rule written about them.*
