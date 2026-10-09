@@ -10,3 +10,4 @@ run.json
 *.out.json
 .DS_Store
 _review_outputs/
+.casetest

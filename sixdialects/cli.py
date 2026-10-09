@@ -1,9 +1,10 @@
 """six-dialects · command line.
 
-Two verbs:
+Three verbs:
 
   probe    measure which grammar a model reaches for first
   review   read what you are building in six grammars
+  serve    the same review as a page, for people who do not open a terminal
 """
 
 from __future__ import annotations
@@ -60,6 +61,17 @@ def build_parser():
     r.add_argument("--decides", default="",
                    help="what the system decides or recommends")
     r.add_argument("--context", default="", help="anything else worth knowing")
+
+    s = sub.add_parser("serve", help="run the review as a page in your browser")
+    _endpoint_args(s)
+    s.add_argument("--host", default="127.0.0.1",
+                   help="interface to bind (default: this machine only)")
+    s.add_argument("--port", type=int, default=8017)
+    s.add_argument("--no-browser", action="store_true",
+                   help="do not open a browser window")
+    s.add_argument("--behind-proxy", action="store_true",
+                   help="a reverse proxy sits in front: trust X-Forwarded-For "
+                        "when counting requests per visitor")
 
     return ap
 
@@ -121,6 +133,16 @@ def _cmd_review(ap, args) -> int:
     return _write(args, result)
 
 
+def _cmd_serve(ap, args) -> int:
+    from .web import serve
+
+    endpoint = _need_endpoint(ap, args)
+    serve(endpoint, host=args.host, port=args.port,
+          open_browser=not args.no_browser,
+          behind_proxy=args.behind_proxy)
+    return 0
+
+
 def _write(args, result) -> int:
     if args.out:
         with open(args.out, "w", encoding="utf-8") as fh:
@@ -135,6 +157,8 @@ def main(argv=None) -> int:
     try:
         if args.command == "probe":
             return _cmd_probe(ap, args)
+        if args.command == "serve":
+            return _cmd_serve(ap, args)
         return _cmd_review(ap, args)
     except EndpointError as exc:
         print(f"error: {exc}", file=sys.stderr)
