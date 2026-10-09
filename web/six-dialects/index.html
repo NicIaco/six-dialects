@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Six Dialects · Ethics of Example</title>
+<meta name="description" content="Describe an AI system. Six Dialects reads it in six ethical grammars, shows where two of them contradict each other, and names the moment a person stops deciding.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-46 -3 92 57'%3E%3Crect x='-46' y='-3' width='92' height='57' fill='%23000'/%3E%3Cg fill='%23F9D949'%3E%3Crect x='-43' y='7' width='7' height='37'/%3E%3Crect x='-43' y='7' width='33' height='7'/%3E%3Crect x='-43' y='22' width='24' height='7'/%3E%3Crect x='-43' y='37' width='33' height='7'/%3E%3Crect x='36' y='7' width='7' height='37'/%3E%3Crect x='10' y='7' width='33' height='7'/%3E%3Crect x='19' y='22' width='24' height='7'/%3E%3Crect x='10' y='37' width='33' height='7'/%3E%3Crect x='-1' y='0' width='2' height='51'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+  @font-face{font-family:"Neue Plak Text";src:url("/fonts/NeuePlakText-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+  @font-face{font-family:"Neue Plak Text";src:url("/fonts/NeuePlakText-SemiBold.woff2") format("woff2");font-weight:600;font-display:swap}
+  @font-face{font-family:"Neue Plak Display";src:url("/fonts/NeuePlak-Black.woff2") format("woff2");font-weight:800;font-display:swap}
+  @font-face{font-family:"Neue Plak Cond";src:url("/fonts/NeuePlak-CondensedBlack.woff2") format("woff2");font-weight:800;font-display:swap}
+
+  :root{
+    --ink:#000000;
+    --paper:#F2F1EC;
+    --muted:rgba(242,241,236,.74);
+    --faint:rgba(242,241,236,.55);
+    --line:rgba(242,241,236,.20);
+    --field:rgba(242,241,236,.06);
+    --signal:#F9D949;
+    --warn:#FF8A6B;
+    --display:"Neue Plak Display","Neue Plak Text",system-ui,sans-serif;
+    --cond:"Neue Plak Cond","Neue Plak Display",system-ui,sans-serif;
+    --body:"Neue Plak Text",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--paper);font-family:var(--body);line-height:1.5;
+       -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:inherit}
+  ::selection{background:var(--signal);color:#000}
+  .wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 clamp(22px,4.5vw,56px)}
+  .narrow{max-width:46rem}
+
+  /* header */
+  header{padding:clamp(16px,2.2vw,26px) 0}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+  .brand svg{width:38px;height:auto;display:block}
+  .brand span{font-family:var(--cond);font-weight:800;font-size:17px;letter-spacing:-.01em}
+  .navs{display:flex;gap:clamp(14px,2.4vw,26px);font-size:13.5px;color:var(--muted)}
+  .navs a{text-decoration:none;transition:color .25s ease}
+  .navs a:hover{color:var(--paper)}
+  .navs .arw{color:var(--signal)}
+
+  /* type */
+  .kicker{display:block;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--paper)}
+  .kicker::before{content:"";display:block;width:52px;height:10px;background:var(--signal);margin-bottom:18px}
+  .kicker.y{color:var(--signal)}
+  .kicker.nobar::before{display:none}
+  h1{font-family:var(--cond);font-weight:800;font-size:clamp(40px,8.4vw,104px);
+     line-height:.92;letter-spacing:-.03em;text-transform:uppercase;margin-top:22px}
+  h1 .y,h2 .y{color:var(--signal)}
+  h2{font-family:var(--cond);font-weight:800;font-size:clamp(30px,5vw,58px);line-height:.95;
+     letter-spacing:-.025em;text-transform:uppercase;margin-top:18px}
+  .lede{margin-top:clamp(26px,3.4vw,40px);font-size:clamp(16px,1.6vw,18.5px);color:var(--muted);line-height:1.6;max-width:56ch}
+  .lede + .lede{margin-top:14px}
+  .lede strong{color:var(--paper);font-weight:600}
+
+  section{padding:clamp(48px,7vw,96px) 0;border-top:1px solid var(--line)}
+  .hero{padding:clamp(30px,5vw,70px) 0 clamp(48px,7vw,96px);border-top:0}
+
+  /* the rule */
+  .rule{font-family:var(--display);font-weight:800;font-size:clamp(24px,3.4vw,40px);line-height:1.1;
+        letter-spacing:-.02em;max-width:20ch;margin-top:clamp(48px,6vw,80px)}
+  .rule-sub{margin-top:16px;color:var(--muted);max-width:52ch;font-size:16px;line-height:1.6}
+  .verdict{margin-top:clamp(48px,6vw,80px);font-family:var(--display);font-weight:800;
+           font-size:clamp(24px,3.4vw,40px);line-height:1.1;letter-spacing:-.02em;color:var(--signal);max-width:22ch}
+
+  /* six to hand */
+  .six{display:grid;grid-template-columns:repeat(3,1fr);margin-top:clamp(28px,4vw,48px);border-top:1px solid var(--line)}
+  .six div{padding:22px 18px 22px 0;border-bottom:1px solid var(--line)}
+  .six b{display:block;font-family:var(--display);font-weight:800;font-size:clamp(19px,2.2vw,26px);letter-spacing:-.015em}
+  .six i{font-style:normal;color:var(--muted);font-size:15px}
+  @media (max-width:640px){ .six{grid-template-columns:repeat(2,1fr)} }
+
+  /* form */
+  form{margin-top:clamp(28px,4vw,44px)}
+  .step{display:grid;grid-template-columns:clamp(56px,9vw,120px) 1fr;gap:0 clamp(12px,3vw,40px);
+        padding:clamp(28px,4vw,44px) 0;border-top:1px solid var(--line)}
+  .step:first-child{border-top:0;padding-top:0}
+  .num{font-family:var(--cond);font-weight:800;font-size:clamp(40px,6.5vw,84px);line-height:.85;color:var(--signal)}
+  .step h3{font-family:var(--display);font-weight:800;font-size:clamp(20px,2.4vw,28px);letter-spacing:-.015em;line-height:1.1}
+  .step .note{color:var(--muted);margin-top:8px;font-size:15.5px;max-width:52ch}
+  @media (max-width:560px){ .step{grid-template-columns:1fr} .num{margin-bottom:12px} }
+
+  label{display:block;margin:22px 0 8px;font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+  label .opt{color:var(--faint);letter-spacing:.08em}
+  .hint{display:block;margin-top:5px;text-transform:none;letter-spacing:0;font-weight:400;font-size:14px;color:var(--faint)}
+  textarea,input[type=text],input[type=password]{
+    width:100%;padding:14px 16px;font:inherit;font-size:16px;line-height:1.5;color:var(--paper);
+    background:var(--field);border:1px solid var(--line);border-radius:0;-webkit-appearance:none;appearance:none}
+  textarea{min-height:12rem;resize:vertical}
+  textarea::placeholder,input::placeholder{color:rgba(242,241,236,.34)}
+  textarea:focus,input:focus{outline:2px solid var(--signal);outline-offset:0;border-color:transparent}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+  @media (max-width:720px){ .grid2{grid-template-columns:1fr} }
+  .row{display:flex;align-items:center;gap:10px;margin-top:16px;color:var(--muted);font-size:15px;flex-wrap:wrap}
+  .row input[type=checkbox]{width:18px;height:18px;accent-color:var(--signal)}
+  .row label{all:unset;cursor:pointer}
+  .linkbtn{background:none;border:0;color:var(--muted);font:inherit;font-size:14px;text-decoration:underline;
+           text-underline-offset:3px;cursor:pointer;padding:0}
+  .linkbtn:hover{color:var(--paper)}
+  .keynote{margin-top:14px;font-size:14.5px;color:var(--faint);max-width:56ch}
+
+  .go{margin-top:6px;display:inline-block;padding:18px 34px;background:var(--signal);color:#000;border:0;
+      font-family:var(--cond);font-weight:800;font-size:22px;letter-spacing:.01em;text-transform:uppercase;cursor:pointer}
+  .go:hover{background:#fff}
+  .go:disabled{opacity:.4;cursor:default;background:var(--signal)}
+  .status{margin-top:20px;min-height:1.6em;color:var(--muted);font-size:16px}
+  .status.err{color:var(--warn)}
+  .pulse::before{content:"";display:inline-block;width:9px;height:9px;background:var(--signal);margin-right:12px;
+                 animation:p 1.2s ease-in-out infinite}
+  @keyframes p{50%{opacity:.15}}
+  @media (prefers-reduced-motion:reduce){ .pulse::before{animation:none} html{scroll-behavior:auto} }
+
+  /* result */
+  #result[hidden]{display:none}
+  .tools{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:26px}
+  .copy{padding:12px 20px;background:transparent;color:var(--paper);border:1px solid var(--paper);
+        font-family:var(--body);font-weight:600;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+  .copy:hover{background:var(--paper);color:#000}
+  .copied{color:var(--signal);font-size:14px}
+  .reading{display:grid;grid-template-columns:1fr 2fr;gap:clamp(14px,3vw,48px);
+           padding:clamp(30px,4vw,48px) 0;border-top:1px solid var(--line)}
+  .reading:first-of-type{margin-top:clamp(28px,4vw,44px)}
+  .city{font-family:var(--cond);font-weight:800;font-size:clamp(28px,3.2vw,42px);line-height:.9;
+        letter-spacing:-.02em;text-transform:uppercase}
+  .speaks{margin-top:10px;color:var(--signal);font-size:15px}
+  .f + .f{margin-top:22px}
+  .f .k{font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .f p{margin-top:6px;font-size:clamp(16px,1.5vw,18px);line-height:1.55;max-width:60ch}
+  @media (max-width:640px){ .reading{grid-template-columns:1fr} }
+
+  .block{padding:clamp(40px,6vw,72px) 0;border-top:1px solid var(--line)}
+  .fork{padding:22px 0;border-top:1px solid var(--line)}
+  .fork:first-of-type{margin-top:26px}
+  .pair{font-family:var(--display);font-weight:800;font-size:clamp(19px,2.2vw,24px);letter-spacing:-.015em}
+  .pair .vs{color:var(--signal);padding:0 .35em}
+  .fork p{margin-top:8px;color:var(--muted);font-size:17px;max-width:60ch}
+  .moment{margin-top:26px;font-family:var(--display);font-weight:800;font-size:clamp(22px,3vw,34px);
+          line-height:1.22;letter-spacing:-.015em;max-width:30ch}
+  .carry{margin-top:26px;font-family:var(--display);font-weight:800;font-size:clamp(22px,3vw,34px);
+         line-height:1.22;letter-spacing:-.015em;color:var(--signal);max-width:30ch}
+  .after{margin-top:clamp(40px,5vw,64px);color:var(--muted);font-size:15.5px;max-width:56ch}
+
+  .cases{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:clamp(26px,3.5vw,40px)}
+  .case{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;padding:26px 24px 24px;border:1px solid var(--line);
+        background:var(--field);transition:border-color .2s ease,background .2s ease}
+  .case:hover,.case:focus-visible{border-color:var(--signal);background:rgba(249,217,73,.06)}
+  .case[aria-pressed="true"]{border-color:var(--signal);box-shadow:inset 0 0 0 1px var(--signal)}
+  .case .cn{font-family:var(--cond);font-weight:800;font-size:44px;line-height:.9;color:var(--signal)}
+  .case .ct{display:block;margin-top:14px;font-family:var(--display);font-weight:800;font-size:clamp(20px,2vw,24px);letter-spacing:-.015em;line-height:1.1}
+  .case .cd{display:block;margin-top:10px;color:var(--muted);font-size:15px;line-height:1.5}
+  .case .cgo{display:block;margin-top:auto;padding-top:16px;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--signal)}
+  @media (max-width:760px){ .cases{grid-template-columns:1fr} }
+  .provenance{margin-top:22px;padding:18px 20px;border-left:3px solid var(--signal);background:var(--field);font-size:15px;color:var(--muted);max-width:60ch}
+  .provenance b{color:var(--paper);font-weight:600}
+  .provenance dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin-top:10px}
+  .provenance dt{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);padding-top:3px}
+  .provenance dd{color:var(--paper)}
+  footer{padding:48px 0 64px;border-top:1px solid var(--line);color:var(--faint);font-size:13.5px;line-height:1.8}
+  footer a{text-underline-offset:3px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="/" aria-label="Ethics of Example">
+      <svg viewBox="-46 -3 92 57" fill="#F9D949" aria-hidden="true">
+        <rect x="-43" y="7" width="7" height="37"/><rect x="-43" y="7" width="33" height="7"/>
+        <rect x="-43" y="22" width="24" height="7"/><rect x="-43" y="37" width="33" height="7"/>
+        <rect x="36" y="7" width="7" height="37"/><rect x="10" y="7" width="33" height="7"/>
+        <rect x="19" y="22" width="24" height="7"/><rect x="10" y="37" width="33" height="7"/>
+        <rect x="-1" y="0" width="2" height="51"/>
+      </svg>
+      <span>Ethics of Example</span>
+    </a>
+    <nav class="navs">
+      <a href="https://github.com/NicIaco/six-dialects">Code <span class="arw">↗</span></a>
+      <a href="https://apolitical.co/en/articles/ai-ethics-speaks-six-languages-it-pretends-to-speak-one-54">The argument <span class="arw">↗</span></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<div class="hero">
+  <div class="wrap">
+    <span class="kicker">Six Dialects · review</span>
+    <h1>Read what you build<br><span class="y">in six grammars</span></h1>
+    <p class="lede">Describe an AI system, one you are building or one you are studying. Six capitals govern AI and each starts from a different place. This page reads your system the way each of them would.</p>
+    <p class="lede">For every grammar you get what it takes for granted about your system and what in it would read as wrong, then the design decision that follows. After the six readings come the forks, where two grammars contradict each other about your system. Last comes the moment a person stops weighing the answer for themselves.</p>
+
+    <div class="six" aria-label="The six grammars">
+      <div><b>Brussels</b><i>rights</i></div>
+      <div><b>Washington</b><i>innovation and liberty</i></div>
+      <div><b>Beijing</b><i>harmony</i></div>
+      <div><b>London</b><i>existential risk</i></div>
+      <div><b>Singapore</b><i>compliance</i></div>
+      <div><b>Rome</b><i>dignity</i></div>
+    </div>
+
+    <p class="rule">Describing a grammar is not endorsing it.</p>
+    <p class="rule-sub">A grammar can be described accurately and still be wrong. Nothing here turns a rights violation into a dialect, and nothing here tells you which grammar to pick. That choice stays with you.</p>
+
+    <p class="verdict">It gives you a reading, not a verdict.</p>
+  </div>
+</div>
+
+<section id="cases-section">
+  <div class="wrap">
+    <span class="kicker">Three systems from the lecture</span>
+    <h2>Pick one, <span class="y">then run it</span></h2>
+    <p class="lede">Pick one and it loads into the form below. Press Run review: without a key you get the reading saved on 2 October 2026, with your key a new one. Or change the description and make it yours.</p>
+    <div class="cases" id="cases">
+      <button type="button" class="case" data-case="scribe" aria-pressed="false"><span class="cn">01</span><span class="ct">The ambient scribe</span><span class="cd">An AI listens to the visit and drafts the note. The doctor signs it.</span><span class="cgo">Load this system</span></button>
+      <button type="button" class="case" data-case="sepsis" aria-pressed="false"><span class="cn">02</span><span class="ct">The sepsis model</span><span class="cd">A score on every inpatient, and an alert above a threshold.</span><span class="cgo">Load this system</span></button>
+      <button type="button" class="case" data-case="chatbot" aria-pressed="false"><span class="cn">03</span><span class="ct">The teen health chatbot</span><span class="cd">A girl of fifteen writes that she wants to end her pregnancy.</span><span class="cgo">Load this system</span></button>
+    </div>
+    <p class="lede"><a href="waiff/">A version for AI cinema <span style="color:var(--signal)">→</span></a></p>
+  </div>
+</section>
+
+<section id="form-section">
+  <div class="wrap">
+    <span class="kicker">Run a review, live</span>
+    <form id="f" novalidate>
+
+      <div class="step">
+        <div class="num" aria-hidden="true">01</div>
+        <div>
+          <h3>Describe your system</h3>
+          <p class="note">In your own words. A few sentences is enough. Say what it does and where it sits in someone's work.</p>
+          <label for="project" class="sr">Describe your system</label>
+          <textarea id="project" maxlength="6000" required
+            placeholder="A model that reads chest X-rays overnight and moves the ones it finds suspicious to the top of the radiologist's list."></textarea>
+
+          <div class="grid2">
+            <div>
+              <label for="used_by">Used by <span class="opt">· optional</span>
+                <span class="hint">The person with their hands on it.</span></label>
+              <input type="text" id="used_by" maxlength="6000" placeholder="A radiologist on the night shift">
+            </div>
+            <div>
+              <label for="affects">Affects <span class="opt">· optional</span>
+                <span class="hint">Often not the same person.</span></label>
+              <input type="text" id="affects" maxlength="6000" placeholder="Patients whose scans wait in the queue">
+            </div>
+            <div>
+              <label for="region">Region <span class="opt">· optional</span>
+                <span class="hint">Where it is used, and in which language.</span></label>
+              <input type="text" id="region" maxlength="6000" placeholder="A cantonal hospital, in German">
+            </div>
+            <div>
+              <label for="decides">Decides <span class="opt">· optional</span>
+                <span class="hint">The output a human then acts on.</span></label>
+              <input type="text" id="decides" maxlength="6000" placeholder="The order in which scans are read">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num" aria-hidden="true">02</div>
+        <div>
+          <h3>Your Public AI key</h3>
+          <p class="note">The reading runs on Apertus, the open Swiss model, through Public AI. You bring your own key. It takes a minute to get one at <a href="https://platform.publicai.co/settings/api-keys" target="_blank" rel="noopener">platform.publicai.co</a>, and a new account comes with free starter credit.</p>
+          <label for="key" class="sr">Public AI key</label>
+          <input type="password" id="key" autocomplete="off" spellcheck="false" placeholder="Paste your key">
+          <div class="row">
+            <input type="checkbox" id="remember"><label for="remember">Remember the key in this browser</label>
+            <button type="button" class="linkbtn" id="forget" hidden>Forget the saved key</button>
+          </div>
+          <p class="keynote" id="keynote">Your key goes to Public AI and nowhere else. On the way it passes through eofe.ai, because Public AI does not accept calls straight from a browser. There it is never stored or logged. If you tick the box, the key stays saved in this browser only.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num" aria-hidden="true">03</div>
+        <div>
+          <button class="go" id="go" type="submit">Run review</button>
+          <div class="status" id="status" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<section id="result" hidden aria-labelledby="result-title">
+  <div class="wrap">
+    <span class="kicker">The reading</span>
+    <h2 id="result-title">Six grammars, <span class="y">one system</span></h2>
+    <div class="tools">
+      <button type="button" class="copy" id="copy">Copy as text</button>
+      <span class="copied" id="copied" aria-live="polite"></span>
+    </div>
+    <div id="provenance"></div>
+    <div id="readings"></div>
+    <div id="forks"></div>
+    <div id="moment"></div>
+    <div id="carry"></div>
+    <p class="after">Paste the text into the appendix of your report. Then do the part this page cannot do: decide which grammar you are writing from, and say where the decision has to stay human.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Six Dialects reads a description. It does not tell you whether you comply and it does not pick a grammar for you. Nothing you type is stored.<br>
+    Nicoletta Iacobacci · Ethics of Example · Apache 2.0 ·
+    <a href="https://github.com/NicIaco/six-dialects">github.com/NicIaco/six-dialects</a> ·
+    <a href="https://doi.org/10.5281/zenodo.22145171">10.5281/zenodo.22145171</a>
+  </div>
+</footer>
+
+<script>
+/* ------------------------------------------------------------------
+   Configuration
+   ------------------------------------------------------------------ */
+const API_URL = "api.php";
+const MODEL   = 'swiss-ai/apertus-v1.5-70b';
+const KEY_STORE = 'sixdialects.publicai.key';
+
+/* ------------------------------------------------------------------
+   Prompt, taken from sixdialects/review.py (SYSTEM, TEMPLATE, _describe,
+   _fields). Generated from the Python source, not rewritten by hand.
+   ------------------------------------------------------------------ */
+const P = {"SYSTEM": "You read software projects in six ethical grammars. You do not rank the grammars and you do not tell the builder which one is right. You report what each one assumes, what will read as wrong inside it, and the concrete design decision that differs. Be specific to this project. Generic ethics advice is worse than none. Answer with JSON and nothing else.", "TEMPLATE": "Six ethical grammars.\n\n@@DIALECTS@@\n\nSomeone is building this:\n\n\"\"\"\n@@PROJECT@@\n\"\"\"\n\n@@FIELDS@@For each grammar, answer three things about THIS project:\n\n- assumes: what this grammar takes for granted about the situation, in one sentence\n- misreads: what in this project would read as wrong or offensive inside this grammar\n- decision: one concrete, implementable design decision this grammar implies\n  (a default, a flow, a piece of copy, a retention rule, who is asked first)\n\nConstraints. Breaking any of these makes the output worse than nothing:\n\n- Do not invent laws, standards or regulatory caps. If you refer to a rule,\n  name it. If you cannot name it, say what the grammar would ask for instead.\n- Do not invent specific numbers, thresholds or limits that the project did\n  not mention. The grammars differ in what they start from, not in what\n  number they pick.\n- The design decision must be something this team could implement this week,\n  and it must follow from the grammar's premise, not from general product\n  sense.\n- Do not escalate severity to make a grammar sound distinct. London asks what\n  one default does when it is repeated a million times. It does not follow\n  that the default should vary: a recommendation that changes at random is\n  worse, not safer.\n\nThen find the places where two grammars contradict each other about this\nspecific project. Those are forks the builder has to take deliberately.\n\nFinally, name the moment in THIS project where the person stops exercising\ntheir own judgment and lets the system's answer stand. If you were told what\nthe system decides or recommends, the moment is about that specific output:\nwhere does a person stop weighing it for themselves?\n\nIt is almost never the confirmation step. By the time someone taps Apply,\nthe decision was made earlier and more quietly. Two worked examples, from\nother projects, to show the depth expected:\n\n  A symptom checker. The moment is not tapping \"find a doctor\". It is the\n  point where the person stops describing what they feel and starts\n  confirming what the system suggested they feel. From there they are\n  reporting the system's symptoms back to it.\n\n  A loan assistant that helps write an application. The moment is not\n  submitting. It is when the applicant accepts the assistant's phrasing of\n  their own circumstances, because from then on they are arguing the\n  system's version of their life rather than their own.\n\nFind the equivalent moment in THIS project. Name what the person still had\none step before it, and no longer has after.\n\nReturn JSON exactly in this shape:\n\n{\"readings\": [\n   {\"dialect\": \"<id>\", \"assumes\": \"...\", \"misreads\": \"...\", \"decision\": \"...\"}\n ],\n \"tensions\": [\n   {\"between\": [\"<id>\", \"<id>\"], \"about\": \"<what they disagree on here>\"}\n ],\n \"delegation_moment\": \"<where in this flow the user stops deciding>\",\n \"question\": \"<one question, ending in a question mark, about THIS system's design. It must be answerable by a decision this team makes, must not be a menu of the options you just listed, and must not be a general question about ethics.>\"}\n\nValid ids: @@IDS@@.", "DIALECT_TEXT": "- brussels (Brussels, speaks rights)\n    starts from: The rights of the person affected, and whether an interference in those rights is lawful and proportionate.\n    cannot say:  It regulates a market in which it does not compete.\n- washington (Washington, speaks innovation and liberty)\n    starts from: The liberty of the individual and the freedom to contract, disclose and choose.\n    cannot say:  It proclaims an open market while restricting what may cross a border.\n- beijing (Beijing, speaks harmony)\n    starts from: The stability of the whole, and the responsibility each person carries toward the group they belong to.\n    cannot say:  The individual, and their claims, when these collide with stability.\n- london (London, speaks existential risk)\n    starts from: The worst case, at scale, and whether the system could fail in ways that cannot be recovered from.\n    cannot say:  It speaks for a small circle of laboratories while ordinary harms happen on the floor below.\n- singapore (Singapore, speaks compliance)\n    starts from: What the applicable rules, standards and documented practice require.\n    cannot say:  Responsible comes to mean conforming rather than just.\n- rome (Rome, speaks dignity)\n    starts from: The dignity of the person, prior to any rule that might be written about them.\n    cannot say:  It funds nothing, which makes it free and lets the secular table set it aside.", "IDS": "brussels, washington, beijing, london, singapore, rome", "DIALECTS": {"brussels": {"name": "Brussels", "speaks": "rights"}, "washington": {"name": "Washington", "speaks": "innovation and liberty"}, "beijing": {"name": "Beijing", "speaks": "harmony"}, "london": {"name": "London", "speaks": "existential risk"}, "singapore": {"name": "Singapore", "speaks": "compliance"}, "rome": {"name": "Rome", "speaks": "dignity"}}, "FIELD_LABELS": [["used_by", "The person operating it"], ["affects", "The people it affects, who may not be the same person"], ["region", "Where it is used, and in which language"], ["decides", "What the system decides or recommends, which a human then acts on"]]};
+
+function buildFields(values) {
+  const given = P.FIELD_LABELS.filter(([k]) => values[k]).map(([k, label]) => [label, values[k]]);
+  if (!given.length) return '';
+  const out = ['What is known about it:', ''];
+  for (const [label, value] of given) out.push(`- ${label}: ${value.trim()}`);
+  out.push('');
+  if (values.used_by && values.affects) {
+    out.push('Note that the operator and the affected party are different people. ' +
+             'A grammar that protects one may not protect the other, and saying ' +
+             'which one it protects is part of the reading.');
+    out.push('');
+  }
+  if (values.context) {
+    out.push(`Additional context: ${values.context.trim()}`);
+    out.push('');
+  }
+  return out.join('\n') + '\n';
+}
+
+function buildPrompt(project, values) {
+  return P.TEMPLATE
+    .split('@@DIALECTS@@').join(P.DIALECT_TEXT)
+    .split('@@PROJECT@@').join(project.trim())
+    .split('@@FIELDS@@').join(buildFields(values))
+    .split('@@IDS@@').join(P.IDS);
+}
+
+function extractJson(text) {
+  const m = String(text || '').match(/\{[\s\S]*\}/);
+  if (!m) throw new Error('the model did not answer in the expected shape. Try once more.');
+  try { return JSON.parse(m[0]); }
+  catch (e) { throw new Error('the model answered with broken JSON. Try once more.'); }
+}
+
+/* ------------------------------------------------------------------
+   Plain text, identical to render() in review.py
+   ------------------------------------------------------------------ */
+function wrapText(text, width = 72, indent = '    ') {
+  // same result as Python textwrap.fill: split on whitespace, and also
+  // after a hyphen inside a word, then fill lines greedily
+  const s = String(text == null ? '' : text).trim().replace(/[\t\n\r\f\v]/g, ' ');
+  if (!s) return '';
+  const chunks = [];
+  s.split(/ +/).forEach(w => {
+    w.split(/(?<=[A-Za-z0-9]-)(?=[A-Za-z])/).forEach((part, j) => chunks.push({ part, glued: j > 0 }));
+  });
+  const room = width - indent.length;
+  const lines = [];
+  let line = '';
+  for (const { part, glued } of chunks) {
+    let w = part;
+    const joined = line === '' ? w : line + (glued ? '' : ' ') + w;
+    if (joined.length <= room) { line = joined; continue; }
+    if (line !== '') lines.push(line);
+    while (w.length > room) { lines.push(w.slice(0, room)); w = w.slice(room); }
+    line = w;
+  }
+  if (line !== '') lines.push(line);
+  return lines.map(l => indent + l).join('\n');
+}
+
+function sortReadings(readings) {
+  const order = Object.keys(P.DIALECTS);
+  const pos = r => { const i = order.indexOf(r && r.dialect); return i < 0 ? 99 : i; };
+  return (readings || []).map((r, i) => [r, i])
+    .sort((a, b) => pos(a[0]) - pos(b[0]) || a[1] - b[1]).map(x => x[0]);
+}
+
+function renderText(result) {
+  const out = ['', 'Six Dialects · project review', '='.repeat(60), ''];
+  for (const r of sortReadings(result.readings)) {
+    const spec = P.DIALECTS[r.dialect] || {};
+    const name = spec.name || r.dialect || '?';
+    out.push(`${name.toUpperCase()}  ·  ${spec.speaks || ''}`);
+    out.push('  assumes');          out.push(wrapText(r.assumes));
+    out.push('  reads as wrong');   out.push(wrapText(r.misreads));
+    out.push('  design decision');  out.push(wrapText(r.decision));
+    out.push('');
+  }
+  const tensions = result.tensions || [];
+  if (tensions.length) {
+    out.push('FORKS  ·  where two grammars contradict each other here');
+    out.push('');
+    for (const t of tensions) {
+      const names = (t.between || []).map(p => (P.DIALECTS[p] || {}).name || p).join(' vs ');
+      out.push(`  ${names}`);
+      out.push(wrapText(t.about));
+      out.push('');
+    }
+  }
+  if (result.delegation_moment) { out.push('THE MOMENT'); out.push(wrapText(result.delegation_moment)); out.push(''); }
+  if (result.question) { out.push('CARRY THIS'); out.push(wrapText(result.question)); out.push(''); }
+  return out.join('\n');
+}
+
+/* ------------------------------------------------------------------
+   Page
+   ------------------------------------------------------------------ */
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; };
+
+let lastResult = null;
+let lastSaved = false;
+let lastInput = null;
+
+function field(k, v) {
+  const d = el('div', 'f');
+  d.append(el('div', 'k', k), el('p', null, v || ''));
+  return d;
+}
+
+function renderPage(data) {
+  const readings = $('readings'), forks = $('forks'), moment = $('moment'), carry = $('carry');
+  [readings, forks, moment, carry].forEach(n => n.replaceChildren());
+
+  for (const r of sortReadings(data.readings)) {
+    const spec = P.DIALECTS[r.dialect] || {};
+    const row = el('article', 'reading');
+    const head = el('div');
+    head.append(el('h3', 'city', spec.name || r.dialect || '?'), el('div', 'speaks', spec.speaks || ''));
+    const body = el('div');
+    body.append(field('assumes', r.assumes), field('reads as wrong', r.misreads), field('design decision', r.decision));
+    row.append(head, body);
+    readings.append(row);
+  }
+
+  if ((data.tensions || []).length) {
+    const b = el('div', 'block');
+    b.append(el('span', 'kicker', 'Forks'));
+    b.append(el('p', 'rule-sub', 'Where two grammars contradict each other about this system. You take these decisions whether you notice them or not.'));
+    for (const t of data.tensions) {
+      const f = el('div', 'fork');
+      const pair = el('div', 'pair');
+      (t.between || []).forEach((p, i) => {
+        if (i) pair.append(el('span', 'vs', 'vs'));
+        pair.append(document.createTextNode((P.DIALECTS[p] || {}).name || p));
+      });
+      f.append(pair, el('p', null, t.about || ''));
+      b.append(f);
+    }
+    forks.append(b);
+  }
+
+  if (data.delegation_moment) {
+    const b = el('div', 'block');
+    b.append(el('span', 'kicker', 'The moment'), el('p', 'moment', data.delegation_moment));
+    moment.append(b);
+  }
+  if (data.question) {
+    const b = el('div', 'block');
+    b.append(el('span', 'kicker', 'Carry this'), el('p', 'carry', data.question));
+    carry.append(b);
+  }
+
+  $('copied').textContent = '';
+  $('result').hidden = false;
+  $('result').scrollIntoView({ block: 'start' });
+}
+
+/* key handling */
+function store(fn) { try { return fn(window.localStorage); } catch (e) { return null; } }
+(function initKey() {
+  const saved = store(s => s.getItem(KEY_STORE));
+  if (saved) { $('key').value = saved; $('remember').checked = true; $('forget').hidden = false; }
+})();
+$('forget').addEventListener('click', () => {
+  store(s => s.removeItem(KEY_STORE));
+  $('key').value = ''; $('remember').checked = false; $('forget').hidden = true;
+});
+$('remember').addEventListener('change', () => {
+  if (!$('remember').checked) { store(s => s.removeItem(KEY_STORE)); $('forget').hidden = true; }
+});
+
+/* the three saved cases */
+const SAVED = {"scribe": {"inputs": {"project": "An ambient AI scribe that listens to the conversation between doctor and patient during a visit and drafts the clinical note. The doctor reviews the draft and signs it, and it becomes part of the medical record.", "used_by": "A family doctor with twenty visits a day", "affects": "Patients, whose words become the record", "region": "A practice in Switzerland, in German", "decides": "What goes into the medical record from each visit"}, "result": {"readings": [{"dialect": "brussels", "assumes": "The doctor's professional duty to document is a lawful and proportionate interference in the patient's right to privacy, justified by medical necessity and Swiss data protection law.", "misreads": "The system's default to include every utterance as clinically relevant would be an unjustified intrusion into the patient's private conversation, violating proportionality.", "decision": "Require the doctor to manually select and confirm each sentence or phrase that is exported to the medical record before signing, rather than auto-including the entire transcript."}, {"dialect": "washington", "assumes": "The doctor and patient have entered a voluntary contract for care, and the doctor's right to document is part of the freedom to contract and practice medicine.", "misreads": "Any restriction on the doctor's ability to use the AI to draft notes would be an illegitimate restriction on their liberty to contract with technology and practice efficiently.", "decision": "Allow the doctor to accept the AI draft with a single 'Sign' button without further manual selection, preserving their freedom to choose the tool and speed of documentation."}, {"dialect": "beijing", "assumes": "The smooth operation of the clinic and the trust between doctor and patient are part of social harmony; the record must serve the collective good of continuity of care.", "misreads": "A system that captures every word creates noise and potential conflict in the record, disrupting the harmony of the doctor-patient relationship and the clinic's workflow.", "decision": "Implement a 'harmony filter' that removes non-clinically relevant speech (e.g., greetings, small talk) before the draft is presented to the doctor, preserving the record's utility for the whole."}, {"dialect": "london", "assumes": "If this system is deployed to millions of visits, an error in transcription or inclusion could create a cascade of misdiagnosis or privacy breaches that cannot be undone at scale.", "misreads": "A system that trusts the doctor's final sign-off as the sole safety valve is insufficient because human error or fatigue could lead to permanent, erroneous records affecting future care.", "decision": "Add an automatic 'sensitivity check' that flags any mention of protected categories (e.g., mental health, sexual health) before the doctor signs, requiring explicit confirmation before those details are finalized."}, {"dialect": "singapore", "assumes": "Compliance with the Swiss Federal Act on Data Protection (FADP) and the clinic's documented information governance policy is the primary ethical obligation.", "misreads": "The doctor's convenience or desire for efficiency is not a valid override for documented retention periods or consent requirements regarding the recording of the consultation.", "decision": "Enforce a retention rule where the system automatically deletes the raw audio and transcript after the doctor signs the note, unless the doctor explicitly opts in to keep it for a longer period per policy."}, {"dialect": "rome", "assumes": "The patient's inherent dignity demands that their words not be reduced to mere data points without their meaningful consent or agency in the record.", "misreads": "The system's default behavior of drafting the note based on the AI's interpretation of the conversation treats the patient as an object of documentation rather than a subject with dignity.", "decision": "Require the patient to explicitly confirm or correct the AI-generated summary on their screen before the doctor signs the note, ensuring the record reflects their own understanding of the visit."}], "tensions": [{"between": ["washington", "brussels"], "about": "Whether the doctor's liberty to use the tool efficiently (Washington) outweighs the patient's right to privacy and proportionality in data collection (Brussels)."}, {"between": ["beijing", "rome"], "about": "Whether the 'harmony' of the clinic and collective care (Beijing) is best served by filtering out personal speech (Beijing) or by ensuring the patient's dignity is reflected in the record (Rome)."}, {"between": ["london", "singapore"], "about": "Whether the existential risk of large-scale error (London) is best mitigated by an automatic sensitivity flag (London) or by strict adherence to documented retention rules (Singapore)."}], "delegation_moment": "When the doctor taps 'Sign' to finalize the note, accepting the AI's draft as the official record without further manual verification.", "question": "Should the system require the patient to explicitly confirm the accuracy of the AI-generated clinical summary before the doctor can sign it, or should the doctor's signature alone suffice as the final authority?"}}, "sepsis": {"inputs": {"project": "A predictive model that scores every inpatient for sepsis risk and fires an alert when the score crosses a threshold. It runs inside the electronic health record of hundreds of US hospitals. An independent validation measured its sensitivity at 14.7%.", "used_by": "A doctor who has to sign a diagnosis", "affects": "Admitted patients, who never see the score", "region": "Hospital in Switzerland, Italian speaking region", "decides": "The order in which scans are read"}, "result": {"readings": [{"dialect": "brussels", "assumes": "The hospital and the patient are two distinct persons whose rights can be weighed against each other without one automatically trumping the other.", "misreads": "The low sensitivity score is treated as an acceptable trade-off for physician convenience rather than an unjustified interference with the patient's right to effective care.", "decision": "Require the system to surface the sensitivity rate and its clinical meaning in the alert banner before any physician can acknowledge or dismiss it."}, {"dialect": "washington", "assumes": "Physicians and patients are free agents who may contract on the terms they choose, including the use of predictive tools.", "misreads": "The low sensitivity is read as an illegitimate restriction on the physician's liberty to practice medicine without algorithmic interference.", "decision": "Give the physician an explicit override button that must be clicked and briefly explained before the alert is suppressed, preserving the freedom to choose while documenting the choice."}, {"dialect": "beijing", "assumes": "The hospital's overall stability and reputation are the primary collective good that must not be jeopardized by unreliable tools.", "misreads": "A low-sensitivity alert that is frequently ignored or overridden by busy doctors is read as a destabilizing source of noise and mistrust.", "decision": "Automatically log every alert, suppression, and override with a timestamp and user ID, feeding a weekly dashboard to hospital leadership so the collective system can learn and adjust."}, {"dialect": "london", "assumes": "The default behavior of the system will be repeated millions of times across many hospitals; therefore the worst-case failure mode must be explicitly mitigated.", "misreads": "A single low-sensitivity score is seen as an isolated error rather than a systemic risk that could become a silent killer when deployed at scale.", "decision": "Maintain a hard rule that alerts cannot be dismissed without a mandatory secondary human review within 30 minutes, regardless of physician workload, to prevent silent failures."}, {"dialect": "singapore", "assumes": "Compliance with documented clinical guidelines and local medical record standards is the primary ethical obligation.", "misreads": "The low sensitivity score is read as a violation of the guideline that requires timely sepsis identification.", "decision": "Update the system's configuration file to flag any model with sensitivity below the guideline threshold as non-compliant and disable alerts until the model is recalibrated or an exception is formally approved by the hospital's clinical governance committee."}, {"dialect": "rome", "assumes": "The inherent dignity of each patient demands that their individual story be honored before any algorithmic score can be used to decide their fate.", "misreads": "The automated score is treated as an objective truth that can override the physician's duty to see the patient as a whole person.", "decision": "Add a mandatory pop-up that asks the physician to type one sentence describing why they are accepting or overriding the sepsis score, forcing a moment of personal judgment before the system's output stands."}], "tensions": [{"between": ["brussels", "washington"], "about": "Whether the patient's right to effective care (Brussels) or the physician's liberty to practice without algorithmic interference (Washington) should take precedence when the tool is unreliable."}, {"between": ["beijing", "rome"], "about": "Whether the stability of the hospital system (Beijing) or the preservation of the patient's individual dignity (Rome) should be prioritized when the tool's performance is poor."}, {"between": ["london", "singapore"], "about": "Whether the default behavior should be hardened to prevent silent failures at scale (London) or whether compliance with documented standards is the primary metric (Singapore), even if it means tolerating a low-sensitivity tool."}], "delegation_moment": "When the physician taps the 'acknowledge' or 'suppress' button after seeing the sepsis score, they stop weighing the patient's individual story against the algorithm's output and instead accept or reject the system's recommendation as the final word.", "question": "What single piece of information must appear on the alert screen before any physician can dismiss it, and who must approve that information?"}}, "chatbot": {"inputs": {"project": "A health chatbot for young people, run by a public health service. A user writes: \"I am 15 and I want to end my pregnancy.\" The chatbot answers with information and points her to services.", "used_by": "A 15-year-old girl, alone, on her phone", "affects": "The girl, and possibly her parents, who are not in the conversation", "region": "Switzerland, in German and Italian", "decides": "What information she receives first, and which service she is sent to"}, "result": {"readings": [{"dialect": "brussels", "assumes": "The project is a lawful and proportionate interference in the girl's right to information and access to health services.", "misreads": "It would read as wrong if the chatbot refused or delayed information solely to protect parental rights without legal justification.", "decision": "Implement a hard rule: upon receiving the query, immediately provide age-appropriate information and service referrals without requiring parental consent or notification, citing Swiss health privacy laws for minors."}, {"dialect": "washington", "assumes": "The girl has the liberty to contract for health services and to choose her own path without unnecessary state or familial interference.", "misreads": "It would read as wrong if the system required parental approval or framed the conversation around parental authority over the minor's body.", "decision": "Design the flow so the user sees only options for self-directed care (e.g., 'Get info', 'Find a clinic') before any mention of involving others, preserving the initial choice space."}, {"dialect": "beijing", "assumes": "The stability of the family unit and social order is paramount, and the girl's action should be guided to maintain harmony with her parents and community.", "misreads": "It would read as wrong if the system prioritizes individual autonomy over familial cohesion without offering pathways to reconciliation or parental involvement.", "decision": "Insert a mandatory step after information delivery: 'Would you like to talk to a counselor about how to discuss this with your parents?' with options to proceed to services or to a mediation-style chatbot."}, {"dialect": "london", "assumes": "The worst-case failure is that the chatbot provides incomplete or harmful information that leads to a dangerous situation or a missed opportunity for care.", "misreads": "It would read as wrong if the system provided a single path to a service without considering that the service might be unavailable, inaccessible, or inappropriate for the user's specific circumstances.", "decision": "Require the system to present at least three distinct service options (e.g., clinic A, clinic B, hotline) with real-time availability checks before the user can select one, ensuring redundancy."}, {"dialect": "singapore", "assumes": "Compliance with Swiss cantonal health regulations and data protection laws (DSG/DSGVO) is the primary ethical obligation for the operator.", "misreads": "It would read as wrong if the system stored the query or shared it with third parties in a way that violates documented privacy standards or legal mandates.", "decision": "Enforce a retention rule: log the interaction only for quality assurance with full anonymization within 7 days, and never store the specific query text or user identifiers without explicit consent."}, {"dialect": "rome", "assumes": "The girl's inherent dignity and worth are the starting point, requiring respect for her agency before any rule about parental rights or state compliance is applied.", "misreads": "It would read as wrong if the system treated her as a problem to be managed by others (parents, doctors, state) rather than as the subject of her own life.", "decision": "Write the opening copy to address her directly: 'You are in control of this conversation. Here is what you can do next.' Avoid any language that implies she is speaking to her parents or seeking permission."}], "tensions": [{"between": ["brussels", "beijing"], "about": "Whether the system should prioritize the minor's right to immediate information (Brussels) or the family's stability and parental involvement (Beijing)."}, {"between": ["washington", "beijing"], "about": "Whether the system should preserve the minor's initial liberty to choose care (Washington) or guide her toward familial harmony (Beijing)."}, {"between": ["rome", "singapore"], "about": "Whether the system should start from the user's dignity (Rome) or from documented compliance with privacy and legal standards (Singapore)."}], "delegation_moment": "When the user taps 'Send to Clinic' or selects the first service option after reading the information, they stop weighing the information for themselves and begin executing the system's recommendation.", "question": "Does the system present the service referral as the only logical next step, or does it explicitly offer a neutral pathway to reconsider the information before committing to a service?"}}};
+const CASE_ORDER = ['scribe', 'sepsis', 'chatbot'];
+const FIELD_NAMES = [['used_by', 'Used by'], ['affects', 'Affects'], ['region', 'Region'], ['decides', 'Decides']];
+
+function savedMatch(values) {
+  for (const id of CASE_ORDER) {
+    const c = SAVED[id];
+    if (['project', ...FIELD_NAMES.map(f => f[0])].every(k => (c.inputs[k] || '').trim() === (values[k] || '').trim())) return c;
+  }
+  return null;
+}
+
+function showProvenance(inputs, saved) {
+  const box = $('provenance');
+  box.replaceChildren();
+  const d = el('div', 'provenance');
+  const head = el('p');
+  head.append(el('b', null, saved ? 'Saved reading' : 'Live reading'),
+    document.createTextNode(saved
+      ? ' · Apertus via Public AI · 2 October 2026. Run it again and the words will change. The grammars will not.'
+      : ' · Apertus via Public AI · ' + new Date().toISOString().slice(0, 10) + '.'));
+  d.append(head);
+  const dl = el('dl');
+  dl.append(el('dt', null, 'System'), el('dd', null, inputs.project || ''));
+  for (const [k, label] of FIELD_NAMES) if (inputs[k]) dl.append(el('dt', null, label), el('dd', null, inputs[k]));
+  d.append(dl);
+  box.append(d);
+}
+
+document.querySelectorAll('.case').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const c = SAVED[btn.dataset.case];
+    if (!c) return;
+    document.querySelectorAll('.case').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+    for (const [k, v] of Object.entries(c.inputs)) if ($(k)) $(k).value = v;
+    $('result').hidden = true;
+    const status = $('status');
+    status.className = 'status';
+    status.textContent = 'Loaded: ' + btn.querySelector('.ct').textContent + '. Press Run review. Without a key you get the reading saved on 2 October; with your key, a new one.';
+    $('form-section').scrollIntoView({ block: 'start' });
+  });
+});
+
+/* run */
+const WAIT = [
+  'Reading it in six grammars.',
+  'Brussels, Washington, Beijing, London, Singapore, Rome.',
+  'Looking for where two of them contradict each other.',
+  'Looking for the moment a person stops deciding.',
+  'Still working. A careful reading takes about a minute.'
+];
+
+function friendly(status, body) {
+  let detail = '';
+  try { const j = JSON.parse(body); detail = (j.error && (j.error.message || j.error)) || j.detail || j.message || ''; } catch (e) { detail = String(body || '').slice(0, 200); }
+  if (status === 401 || status === 403) return 'Public AI did not accept this key. Check that you pasted all of it.';
+  if (status === 404 && /model/i.test(detail)) return 'Public AI does not know the model ' + MODEL + ' right now.';
+  if (status === 404) return 'The page could not find its connection to Public AI. Tell the person who runs this page.';
+  if (status === 429) return 'Public AI says too many requests. Wait a minute and try again.';
+  if (status === 413) return 'That description is too long. A few sentences is what this reads best.';
+  if (status === 502 || status === 504) {
+    const plain = String(detail || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160);
+    return 'Public AI did not answer in time. Try again in a moment.' + (plain ? ' (' + status + ': ' + plain + ')' : ' (' + status + ')');
+  }
+  return 'The reading failed (' + status + ')' + (detail ? ': ' + detail : '.');
+}
+
+$('f').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const project = $('project').value.trim();
+  const key = $('key').value.trim();
+  const status = $('status');
+  status.className = 'status err';
+  if (!project) { status.textContent = 'Describe your system first.'; $('project').focus(); return; }
+  if (!key) {
+    const v = { project };
+    for (const id of ['used_by', 'affects', 'region', 'decides']) v[id] = $(id).value.trim();
+    const c = savedMatch(v);
+    if (c) {
+      lastResult = c.result; lastSaved = true; lastInput = { ...c.inputs };
+      status.className = 'status'; status.textContent = '';
+      showProvenance(c.inputs, true);
+      renderPage(c.result);
+      return;
+    }
+    status.textContent = 'Paste your Public AI key first. Without a key, only the three systems from the lecture can be read, as they were saved.';
+    $('key').focus(); return;
+  }
+
+  if ($('remember').checked) { store(s => s.setItem(KEY_STORE, key)); $('forget').hidden = false; }
+
+  const values = {};
+  for (const id of ['used_by', 'affects', 'region', 'decides']) values[id] = $(id).value.trim();
+  values.context = '';
+
+  const payload = {
+    model: MODEL,
+    messages: [
+      { role: 'system', content: P.SYSTEM },
+      { role: 'user', content: buildPrompt(project, values) }
+    ],
+    temperature: 0.2,
+    max_tokens: 2000
+  };
+
+  $('go').disabled = true;
+  status.className = 'status pulse';
+  let i = 0;
+  status.textContent = WAIT[0];
+  const tick = setInterval(() => { i = Math.min(i + 1, WAIT.length - 1); status.textContent = WAIT[i]; }, 12000);
+
+  const started = Date.now();
+  try {
+    let res;
+    try {
+      res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-PublicAI-Key': key },
+        body: JSON.stringify(payload)
+      });
+    } catch (netErr) {
+      throw new Error('Could not reach Public AI. Check your connection and try again.');
+    }
+    const text = await res.text();
+    if (!res.ok) throw new Error(friendly(res.status, text) + (res.status >= 500 ? ' [' + Math.round((Date.now() - started) / 1000) + ' s]' : ''));
+    let body;
+    try { body = JSON.parse(text); } catch (x) { throw new Error('Public AI answered with something that is not JSON.'); }
+    const content = body && body.choices && body.choices[0] && body.choices[0].message && body.choices[0].message.content;
+    if (!content) throw new Error('Public AI answered, but with no reading inside.');
+    const data = extractJson(content);
+    lastResult = data;
+    lastInput = { project, ...values };
+    lastSaved = false;
+    status.className = 'status';
+    status.textContent = '';
+    document.querySelectorAll('.case').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    showProvenance(lastInput, false);
+    renderPage(data);
+  } catch (err) {
+    status.className = 'status err';
+    status.textContent = String(err.message || err);
+  } finally {
+    clearInterval(tick);
+    $('go').disabled = false;
+  }
+});
+
+/* copy */
+$('copy').addEventListener('click', async () => {
+  if (!lastResult) return;
+  const head = [];
+  if (lastInput) {
+    head.push('System described');
+    head.push(wrapText(lastInput.project));
+    for (const [k, label] of [['used_by','Used by'],['affects','Affects'],['region','Region'],['decides','Decides']]) {
+      if (lastInput[k]) head.push(`  ${label}: ${lastInput[k]}`);
+    }
+    head.push('');
+    head.push(`Model: ${MODEL} via Public AI · ${lastSaved ? 'saved reading, 2026-10-02' : new Date().toISOString().slice(0, 10)}`);
+  }
+  const text = head.join('\n') + '\n' + renderText(lastResult);
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {
+    const ta = el('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.append(ta); ta.select();
+    try { ok = document.execCommand('copy'); } catch (x) {}
+    ta.remove();
+  }
+  $('copied').textContent = ok ? 'Copied. Paste it into your appendix.' : 'Your browser blocked copying. Select the text by hand.';
+});
+
+/* for testing */
+window.__six = { buildPrompt, renderText, renderPage, extractJson };
+</script>
+</body>
+</html>

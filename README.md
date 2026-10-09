@@ -32,6 +32,15 @@ The two readings coincided on 75% of scenarios.
 
 A model can be open all the way down, weights and data and training process, and still be unreadable at the level that decides how it talks to a person. This reads that level, imperfectly, from the outside.
 
+## Reading a system, and a film
+
+The same six grammars can read something you are building. Describe it in a few sentences and the review page reads it the way each capital would, shows where two of them contradict each other, and names the moment a person stops deciding.
+
+- [eofe.ai/six-dialects](https://eofe.ai/six-dialects/): the general review, with three systems from medicine.
+- [eofe.ai/six-dialects/waiff](https://eofe.ai/six-dialects/waiff/): the version for AI cinema. Its first case is an actor who died ten years ago, recreated with AI under a license signed by his family.
+
+Both run on Apertus through Public AI, with your own key. Nothing you type is stored.
+
 ---
 
 ## Why six
